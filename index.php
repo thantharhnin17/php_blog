@@ -1,3 +1,30 @@
+<?php
+
+  session_start();
+  require 'config/config.php';
+
+  if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
+    header('Location: login.php');
+  }
+
+  if(!empty($_GET['pageno'])){
+    $pageno = $_GET['pageno'];
+  }else{
+    $pageno = 1;
+  }
+  $numOfRecs = 6;
+  $offset = ($pageno - 1) * $numOfRecs;
+
+  $stmt = $pdo->prepare("SELECT * FROM posts ORDER BY id DESC");
+  $stmt->execute();
+  $raw_result = $stmt->fetchAll();
+  $total_pages = ceil(count($raw_result) / $numOfRecs);
+
+  $stmt = $pdo->prepare("SELECT * FROM posts ORDER BY id DESC LIMIT $offset,$numOfRecs");
+  $stmt->execute();
+  $result = $stmt->fetchAll();                
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,49 +47,40 @@
   
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="">
+  <div class="content-wrapper" style="margin-left: 0; !important">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header  py-4">
       <div class="container-fluid text-center">
         <h1>Blog Site</h1>
       </div><!-- /.container-fluid -->
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section class="container content">
         <div class="row">
-            <div class="col-md-4">
-              <!-- Box Comment -->
-              <div class="card card-widget">
-                <div class="card-header">
-                  <div class="card-title text-center float-none">
-                    <h4>Blog Title</h4>
-                  </div>
-                  
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                  <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-                </div>
-                <!-- /.card-body -->
-                
-              </div>
-              <!-- /.card -->
-            </div>
-            <!-- /.col -->
+          <?php
+              if($result){
+                        
+                  foreach($result as $value){
+            ?>
 
             <div class="col-md-4">
               <!-- Box Comment -->
               <div class="card card-widget">
                 <div class="card-header">
                   <div class="card-title text-center float-none">
-                    <h4>Blog Title</h4>
+                    <h4><?php echo $value['title'] ?></h4>
                   </div>
                   
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                  <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
+                  <a href="blog_detail.php?id=<?php echo $value['id'] ?>">
+                    <img class="img-fluid pad" 
+                    src="admin/images/<?php echo $value['image'] ?>" 
+                    style="width:450px; height: 250px; object-fit: cover; !important"
+                    alt="Photo">
+                  </a>
                 </div>
                 <!-- /.card-body -->
                 
@@ -70,88 +88,46 @@
               <!-- /.card -->
             </div>
             <!-- /.col -->
-
-            <div class="col-md-4">
-              <!-- Box Comment -->
-              <div class="card card-widget">
-                <div class="card-header">
-                  <div class="card-title text-center float-none">
-                    <h4>Blog Title</h4>
-                  </div>
-                  
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                  <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-                </div>
-                <!-- /.card-body -->
-                
-              </div>
-              <!-- /.card -->
-            </div>
-            <!-- /.col -->
-
-            <div class="col-md-4">
-              <!-- Box Comment -->
-              <div class="card card-widget">
-                <div class="card-header">
-                  <div class="card-title text-center float-none">
-                    <h4>Blog Title</h4>
-                  </div>
-                  
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                  <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-                </div>
-                <!-- /.card-body -->
-                
-              </div>
-              <!-- /.card -->
-            </div>
-            <!-- /.col -->
-
-            <div class="col-md-4">
-              <!-- Box Comment -->
-              <div class="card card-widget">
-                <div class="card-header">
-                  <div class="card-title text-center float-none">
-                    <h4>Blog Title</h4>
-                  </div>
-                  
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                  <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-                </div>
-                <!-- /.card-body -->
-                
-              </div>
-              <!-- /.card -->
-            </div>
-            <!-- /.col -->
-
-            <div class="col-md-4">
-              <!-- Box Comment -->
-              <div class="card card-widget">
-                <div class="card-header">
-                  <div class="card-title text-center float-none">
-                    <h4>Blog Title</h4>
-                  </div>
-                  
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                  <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-                </div>
-                <!-- /.card-body -->
-                
-              </div>
-              <!-- /.card -->
-            </div>
-            <!-- /.col -->
-            
+                       
+            <?php
+               }
+              }
+            ?>
+           
+        </div>
+        <div class="row">
+          <div class="col">
+            <nav aria-label="Page navigation example" class="float-right">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <a class="page-link" href="?pageno=1">
+                        First
+                      </a>
+                    </li>
+                    <li class="page-item <?php if($pageno <= 1){ echo 'disabled';} ?>">
+                      <a class="page-link" href="<?php if($pageno <= 1){ echo '#';}else{ echo "?pageno=".($pageno-1); } ?>">
+                        Previous
+                      </a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">
+                        <?php echo $pageno; ?>
+                      </a>
+                    </li>
+                    <li class="page-item <?php if($pageno >= $total_pages){ echo 'disabled';} ?>">
+                      <a class="page-link" href="<?php if($pageno >= $total_pages){ echo '#';}else{ echo "?pageno=".($pageno+1); } ?>">
+                        Next
+                      </a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="?pageno=<?php echo $total_pages ?>">
+                        Last
+                      </a>
+                    </li>
+                  </ul>
+              </nav>
           </div>
+        </div>
     </section>
     <!-- /.content -->
 
@@ -162,11 +138,10 @@
   <!-- /.content-wrapper -->
 
   <footer class="main-footer" style=" margin-left:0; !important">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.0.5
+  <div class="float-right d-none d-sm-inline">
+      <a href="logout.php" type="button" class="btn btn-default">Logout</a>
     </div>
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
-    reserved.
+    <strong>Copyright &copy; 2022 <a href="#">A Programmer</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->

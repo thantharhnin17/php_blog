@@ -15,7 +15,7 @@
       <a href="logout.php" type="button" class="btn btn-default">Logout</a>
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2022 <a href="https://adminlte.io">A Programmer</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2022 <a href="#">A Programmer</a>.</strong> All rights reserved.
   </footer>
 </div>
 <!-- ./wrapper -->
