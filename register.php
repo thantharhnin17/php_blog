@@ -7,6 +7,7 @@
         $name = $_POST['name'];
         $email = $_POST['email'];
         $password = $_POST['password'];
+        $role = 0;
 
         $stmt = $pdo->prepare("SELECT * FROM users WHERE email=:email");
 
@@ -17,8 +18,8 @@
         if($user){
             echo "<script>alert('Email duplicate')</script>";
         }else{  
-          $stmt = $pdo->prepare("INSERT INTO users(name,email,password) VALUES (?,?,?)");
-          $result = $stmt->execute([$name,$email,$password]);
+          $stmt = $pdo->prepare("INSERT INTO users(name,email,password,role) VALUES (?,?,?,?)");
+          $result = $stmt->execute([$name,$email,$password,$role]);
           if($result){
             echo "<script>alert('Successfully Register! You can now log in.'); window.location.href='login.php';</script>";
           }

@@ -17,6 +17,7 @@
             if($user['password'] == $password){
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['name'] = $user['name'];
+                $_SESSION['role'] = $user['role'];
                 $_SESSION['logged_in'] = time();
 
                 header('Location: index.php');
