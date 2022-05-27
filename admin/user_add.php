@@ -10,6 +10,7 @@
   if($_POST){
     $name = $_POST['name'];
     $email = $_POST['email'];
+    $password = $_POST['password'];
     $role = $_POST['role'];
 
     $stmt = $pdo->prepare("SELECT * FROM users WHERE email=:email");
@@ -21,8 +22,8 @@
     if($user){
         echo "<script>alert('Email duplicate')</script>";
     }else{  
-      $stmt = $pdo->prepare("INSERT INTO users(name,email,role) VALUES (?,?,?)");
-      $result = $stmt->execute([$name,$email,$role]);
+      $stmt = $pdo->prepare("INSERT INTO users(name,email,password,role) VALUES (?,?,?,?)");
+      $result = $stmt->execute([$name,$email,$password,$role]);
       if($result){
         echo "<script>alert('Successfully Register As A User!'); window.location.href='user.php';</script>";
       }
@@ -66,6 +67,11 @@
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="text" class="form-control" name="email" value="" required>
+                        <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="text" class="form-control" name="password" value="" required>
                         <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
                     </div>
                     <div class="form-check form-check-inline">

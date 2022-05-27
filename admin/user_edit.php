@@ -11,6 +11,7 @@
     $id = $_POST['id'];
     $name = $_POST['name'];
     $email = $_POST['email'];
+    $password = $_POST['password'];
     $role = $_POST['role'];
 
     $stmt = $pdo->prepare("SELECT * FROM users WHERE email=:email AND id!=:id");
@@ -21,7 +22,7 @@
     if($user){
         echo "<script>alert('Email duplicate')</script>";
     }else{ 
-            $stmt = $pdo->prepare("UPDATE users SET name='$name',email='$email',role='$role' WHERE id='$id'");
+            $stmt = $pdo->prepare("UPDATE users SET name='$name',email='$email',password='$password',role='$role' WHERE id='$id'");
             $result = $stmt->execute();
             if($result){
             echo "<script>alert('Successfully Updated'); window.location.href='user.php';</script>";
@@ -73,6 +74,11 @@
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="text" class="form-control" name="email" value="<?php echo $result[0]['email'] ?>" required>
+                        <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="text" class="form-control" name="password" value="<?php echo $result[0]['password'] ?>" required>
                         <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
                     </div>
                     <div class="form-check form-check-inline">

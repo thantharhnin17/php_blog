@@ -20,10 +20,15 @@
   $cmt_stmt->execute();
   $cmt_result = $cmt_stmt->fetchAll();
 
-  $author_id = $cmt_result[0]['author_id'];
-  $au_stmt = $pdo->prepare("SELECT * FROM users WHERE id=".$author_id);
-  $au_stmt->execute();
-  $au_result = $au_stmt->fetchAll();
+  $au_result = [];
+  if($cmt_result){
+    foreach($cmt_result as $key => $value){
+      $author_id = $cmt_result[$key]['author_id'];
+      $au_stmt = $pdo->prepare("SELECT * FROM users WHERE id=".$author_id);
+      $au_stmt->execute();
+      $au_result[] = $au_stmt->fetchAll();
+    }
+  }
 
   if($_POST){
     $comment = $_POST['comment'];  
@@ -43,7 +48,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Blog Details</title>
+  <title>Blog | Blog Details</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -87,22 +92,27 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer card-comments">
+                <?php if($cmt_result){ 
+                      foreach($cmt_result as $key => $value ){?>
                   <div class="card-comment">
                     <!-- User image -->
                     <div class="rounded-circle bg-dark text-white text-center float-left" style="width:30px; height:30px;">
                       <span class="fas fa-user" style="margin-top: 5px;"></span>
                     </div>
                    
-                    <div class="comment-text">
-                      <span class="username">
-                        <?php echo $au_result[0]['name']; ?>
-                        <span class="text-muted float-right"><?php echo $cmt_result[0]['created_at']; ?></span>
-                      </span><!-- /.username -->
-                      <?php echo $cmt_result[0]['content']; ?>
-                    </div>
+                      <div class="comment-text">
+                        <span class="username">
+                          <?php echo $au_result[$key][0]['name']; ?>
+                          <span class="text-muted float-right"><?php echo $value['created_at']; ?></span>
+                        </span><!-- /.username -->
+                        <?php echo $value['content']; ?>
+                      </div>
+
                     <!-- /.comment-text -->
                   </div>
                   <!-- /.card-comment -->
+                  
+                  <?php } } ?>
                 </div>
                 <!-- /.card-footer -->
                 <div class="card-footer">
