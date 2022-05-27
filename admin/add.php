@@ -69,8 +69,8 @@
                         <input type="file" name="image" value="" required>
                     </div>
                     <div class="form-group">
-                    <button type="submit" class="btn btn-success">Submit</button>
-                    <a href="index.php" class="btn btn-warning">Back</a>
+                      <button type="submit" class="btn btn-success">Submit</button>
+                      <a href="index.php" class="btn btn-warning">Back</a>
                     </div>
                 </form>
               </div>
