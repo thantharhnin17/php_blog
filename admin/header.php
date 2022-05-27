@@ -39,7 +39,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- SEARCH FORM -->
     <form class="form-inline ml-3" method="post" action="<?php echo $page == 'index.php' ? 'index.php' : 'user.php'; ?>">
       <div class="input-group input-group-sm">
-        <input name="search" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+        <input name="search" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search"
+        value="<?php if(empty($_POST['search']) && empty($_COOKIE['search'])) {echo '';} else{ echo isset($_POST['search']) ? $_POST['search'] : $_COOKIE['search'];}  ?>">
+        <!-- echo isset($_POST['search']) ? $_POST['search'] : '';  -->
         <div class="input-group-append">
           <button class="btn btn-navbar" type="submit">
             <i class="fas fa-search"></i>
