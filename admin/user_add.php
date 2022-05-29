@@ -11,25 +11,26 @@
   }
 
   if($_POST){
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $role = $_POST['role'];
 
-    if(empty($name) || empty($email) || empty($password) || strlen($password) < 4){
-      if(empty($name)){
+    if(empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password']) || strlen($_POST['password']) < 4){
+      if(empty($_POST['name'])){
         $nameError = 'Please fill name';
       }
-      if(empty($email)){
+      if(empty($_POST['email'])){
         $emailError = 'Please fill email';
       }
-      if(empty($password)){
+      if(empty($_POST['password'])){
         $passwordError = 'Please fill password';
       }
-      elseif(strlen($password) < 4){
+      elseif(strlen($_POST['password']) < 4){
         $passwordError = 'Password should be 4 characters at least';
       }
     }else{
+      $name = $_POST['name'];
+      $email = $_POST['email'];
+      $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
+      $role = $_POST['role'];
+
       $stmt = $pdo->prepare("SELECT * FROM users WHERE email=:email");
 
       $stmt->bindValue(':email',$email);

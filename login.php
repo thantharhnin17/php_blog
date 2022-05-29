@@ -14,7 +14,7 @@
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if($user){
-            if($user['password'] == $password){
+            if(password_verify($password, $user['password'])){
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['name'] = $user['name'];
                 $_SESSION['logged_in'] = time();
@@ -22,7 +22,7 @@
                 header('Location: index.php');
             }
         }
-        echo "<script>alert('Incorrect credentials')</script>";
+        $loginError = 'Incorrect credentials';
     }
 
 ?>
@@ -67,14 +67,19 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" name="password" class="form-control" placeholder="Password">
+          <input type="password" name="password" id="pass" class="form-control" placeholder="Password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
             </div>
           </div>
         </div>
-          
+        <div class="form-group-inline form-check">
+              <input type="checkbox" class="form-check-input" id="checkPass" onclick="showPassword()">
+              <label class="form-check-label" for="checkPass">Show Password</label>
+          </div>
+        <div class="text-danger mb-3"><?php echo empty($loginError) ? '': '*'.$loginError; ?></div> 
+
           <div class="row">
             <div class="col-6">
                 <button type="submit" class="btn btn-primary btn-block">Log In</button>
@@ -93,6 +98,17 @@
   </div>
 </div>
 <!-- /.login-box -->
+
+<script>
+    function showPassword() {
+      var x = document.getElementById("pass");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+  </script>
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
