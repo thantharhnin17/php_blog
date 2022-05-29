@@ -2,6 +2,7 @@
 
   session_start();
   require '../config/config.php';
+  require "../config/common.php";
 
   if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
     header('Location: login.php');
@@ -12,20 +13,18 @@
 
   if($_POST){
     
-    if(empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password']) || strlen($_POST['password']) < 4){
+    if(empty($_POST['name']) || empty($_POST['email'])){
       if(empty($_POST['name'])){
         $nameError = 'Please fill name';
       }
       if(empty($_POST['email'])){
         $emailError = 'Please fill email';
       }
-      if(empty($_POST['password'])){
-        $passwordError = 'Please fill password';
-      }
-      elseif(strlen($_POST['password']) < 4){
-        $passwordError = 'Password should be 4 characters at least';
-      }
-    }else{
+    }
+    elseif(!empty($_POST['password']) && strlen($_POST['password']) < 4){
+      $passwordError = 'Password should be 4 characters at least';
+    }
+    else{
       $id = $_POST['id'];
       $name = $_POST['name'];
       $email = $_POST['email'];
@@ -40,7 +39,12 @@
       if($user){
           echo "<script>alert('Email duplicate')</script>";
       }else{ 
-              $stmt = $pdo->prepare("UPDATE users SET name='$name',email='$email',password='$password',role='$role' WHERE id='$id'");
+        if($password != null){
+          $stmt = $pdo->prepare("UPDATE users SET name='$name',email='$email',password='$password',role='$role' WHERE id='$id'");
+        }else{
+          $stmt = $pdo->prepare("UPDATE users SET name='$name',email='$email',role='$role' WHERE id='$id'");
+        }
+              
               $result = $stmt->execute();
               if($result){
               echo "<script>alert('Successfully Updated'); window.location.href='user.php';</script>";
@@ -85,6 +89,9 @@
 
               <div class="card-body">
                 <form action="" method="post" enctype="multipart/form-data">
+                  <!-- csrf -->
+                  <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">  
+
                     <input type="hidden" name="id" value="<?php echo $result[0]['id'] ?>">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
@@ -98,7 +105,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" id="pass" value="<?php echo $result[0]['password'] ?>">
+                        <span style="font-size: 10px;">This user already has a password</span>
+                        <input type="password" class="form-control" name="password" id="pass" value="">
                         <div class="form-text text-danger"><?php echo empty($passwordError) ? '': '*'.$passwordError; ?></div>
                         <div class="form-group form-check">
                           <input type="checkbox" class="form-check-input" id="checkPass" onclick="showPassword()">

@@ -3,7 +3,9 @@
 //form back to remain text field
 
   session_start();
+
   require '../config/config.php';
+  require "../config/common.php";
 
   if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
     header('Location: login.php');
@@ -13,6 +15,7 @@
   }
 
   if($_POST){
+    
       if(empty($_POST['title']) || empty($_POST['content']) || empty($_FILES['image'])){
         if(empty($_POST['title'])){
           $titleError = 'Please fill title';
@@ -72,7 +75,10 @@
 
               <div class="card-body">
                 <form action="add.php" method="post" enctype="multipart/form-data">
-                    <div class="mb-3">
+                  <!-- csrf -->
+                  <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">       
+                               
+                  <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
                         <input type="text" class="form-control" name="title" value="">
                         <div class="form-text text-danger"><?php echo empty($titleError) ? '': '*'.$titleError; ?></div>

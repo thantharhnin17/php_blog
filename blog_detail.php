@@ -2,6 +2,7 @@
 
   session_start();
   require 'config/config.php';
+  require 'config/common.php';
 
   if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
     header('Location: login.php');
@@ -123,11 +124,15 @@
                 <!-- /.card-footer -->
                 <div class="card-footer">
                   <form action="" method="post">
+                      <!-- csrf -->
+                      <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>"> 
+                      
                       <div class="rounded-circle bg-dark text-white text-center float-left mr-2" style="width:30px; height:30px;">
                         <span class="fas fa-user" style="margin-top: 5px;"></span>
                       </div>
                   <!-- .img-push is used to add margin to elements next to floating images -->
                     <div class="img-push" style="width:95%; display:inline-block; !important">
+
                       <input type="text" name="comment" class="form-control form-control-sm" placeholder="Press enter to post comment">
                       <div class="text-danger"><?php echo empty($cmtError) ? '': '*'.$cmtError; ?></div>
                     </div>

@@ -2,6 +2,7 @@
 
     session_start();
     require 'config/config.php';
+    require 'config/common.php';
 
     if($_POST){
         
@@ -79,6 +80,9 @@
       <p class="login-box-msg">Register new account</p>
 
       <form action="register.php" method="post">
+        <!-- csrf -->
+        <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>"> 
+
         <div class="mb-3">
           <div class="form-text text-danger"><?php echo empty($nameError) ? '': '*'.$nameError; ?></div>
           <div class="input-group">
