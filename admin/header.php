@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -38,6 +39,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     ?>
     <!-- SEARCH FORM -->
     <form class="form-inline ml-3" method="post" action="<?php echo $page == 'index.php' ? 'index.php' : 'user.php'; ?>">
+      <!-- csrf -->
+      <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">  
+
       <div class="input-group input-group-sm">
         <input name="search" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search"
         value="<?php if(empty($_POST['search']) && empty($_COOKIE['search'])) {echo '';} else{ echo isset($_POST['search']) ? $_POST['search'] : $_COOKIE['search'];}  ?>">
@@ -82,7 +86,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                with font-awesome or any other icon font library -->
           
           <li class="nav-item">
-            <a href="index.php" class="nav-link">
+            <a href="../admin/index.php" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Blogs
@@ -95,7 +99,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                with font-awesome or any other icon font library -->
           
           <li class="nav-item">
-            <a href="user.php" class="nav-link">
+            <a href="../admin/user.php" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Users
