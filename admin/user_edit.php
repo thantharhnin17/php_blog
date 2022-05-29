@@ -16,21 +16,36 @@
     $email = $_POST['email'];
     $password = $_POST['password'];
     $role = $_POST['role'];
+    if(empty($name) || empty($email) || empty($password) || strlen($password) < 4){
+      if(empty($name)){
+        $nameError = 'Please fill name';
+      }
+      if(empty($email)){
+        $emailError = 'Please fill email';
+      }
+      if(empty($password)){
+        $passwordError = 'Please fill password';
+      }
+      elseif(strlen($password) < 4){
+        $passwordError = 'Password should be 4 characters at least';
+      }
+    }else{
+      $stmt = $pdo->prepare("SELECT * FROM users WHERE email=:email AND id!=:id");
 
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email=:email AND id!=:id");
+      $stmt->execute(array(':email'=>$email,':id'=>$id));
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $stmt->execute(array(':email'=>$email,':id'=>$id));
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+      if($user){
+          echo "<script>alert('Email duplicate')</script>";
+      }else{ 
+              $stmt = $pdo->prepare("UPDATE users SET name='$name',email='$email',password='$password',role='$role' WHERE id='$id'");
+              $result = $stmt->execute();
+              if($result){
+              echo "<script>alert('Successfully Updated'); window.location.href='user.php';</script>";
+              }
+          }
+    }
 
-    if($user){
-        echo "<script>alert('Email duplicate')</script>";
-    }else{ 
-            $stmt = $pdo->prepare("UPDATE users SET name='$name',email='$email',password='$password',role='$role' WHERE id='$id'");
-            $result = $stmt->execute();
-            if($result){
-            echo "<script>alert('Successfully Updated'); window.location.href='user.php';</script>";
-            }
-        }
   }
 
   $stmt = $pdo->prepare("SELECT * FROM users WHERE id=".$_GET['id']);
@@ -71,18 +86,22 @@
                     <input type="hidden" name="id" value="<?php echo $result[0]['id'] ?>">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" name="name" value="<?php echo $result[0]['name'] ?>" required>
-                        <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                        <input type="text" class="form-control" name="name" value="<?php echo $result[0]['name'] ?>">
+                        <div class="form-text text-danger"><?php echo empty($nameError) ? '': '*'.$nameError; ?></div>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="text" class="form-control" name="email" value="<?php echo $result[0]['email'] ?>" required>
-                        <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                        <input type="text" class="form-control" name="email" value="<?php echo $result[0]['email'] ?>">
+                        <div class="form-text text-danger"><?php echo empty($emailError) ? '': '*'.$emailError; ?></div>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="text" class="form-control" name="password" value="<?php echo $result[0]['password'] ?>" required>
-                        <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                        <input type="password" class="form-control" name="password" id="pass" value="<?php echo $result[0]['password'] ?>">
+                        <div class="form-text text-danger"><?php echo empty($passwordError) ? '': '*'.$passwordError; ?></div>
+                        <div class="form-group form-check">
+                          <input type="checkbox" class="form-check-input" id="checkPass" onclick="showPassword()">
+                          <label class="form-check-label" for="checkPass">Show Password</label>
+                        </div>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="role" id="user" value="0" <?php if($result[0]['role']==0) echo "checked" ?>>

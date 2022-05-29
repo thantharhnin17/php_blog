@@ -52,7 +52,7 @@
                 }else{
                   $pageno = 1;
                 }
-                $numOfRecs = 2;
+                $numOfRecs = 5;
                 $offset = ($pageno - 1) * $numOfRecs;
 
                 if(empty($_POST['search']) && empty($_COOKIE['search'])){

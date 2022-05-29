@@ -11,6 +11,14 @@
   }
 
   if($_POST){
+    if(empty($_POST['title']) || empty($_POST['content'])){
+      if(empty($_POST['title'])){
+        $titleError = 'Please fill title';
+      }
+      if(empty($_POST['content'])){
+        $contentError = 'Please fill content';
+      }
+    }else{
       $id = $_POST['id'];
       $title = $_POST['title'];
       $content = $_POST['content'];
@@ -38,6 +46,8 @@
             echo "<script>alert('Successfully Updated'); window.location.href='index.php';</script>";
             }
       }
+
+    }
   }
 
   $stmt = $pdo->prepare("SELECT * FROM posts WHERE id=".$_GET['id']);
@@ -78,12 +88,13 @@
                     <input type="hidden" name="id" value="<?php echo $result[0]['id'] ?>">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" name="title" value="<?php echo $result[0]['title'] ?>" required>
-                        <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                        <input type="text" class="form-control" name="title" value="<?php echo $result[0]['title'] ?>">
+                        <div class="form-text text-danger"><?php echo empty($titleError) ? '': '*'.$titleError; ?></div>
                     </div>
                     <div class="mb-3">
                         <label for="content" class="form-label">Content</label>
                         <textarea name="content" class="form-control" cols="30" rows="10"><?php echo $result[0]['content'] ?></textarea>
+                        <div class="form-text text-danger"><?php echo empty($contentError) ? '': '*'.$contentError; ?></div>
                     </div>
                     <div class="form-group">
                         <label for="image">Image</label><br>

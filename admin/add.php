@@ -1,5 +1,7 @@
 <?php
 
+//form back to remain text field
+
   session_start();
   require '../config/config.php';
 
@@ -11,21 +13,33 @@
   }
 
   if($_POST){
-      $file = 'images/'.($_FILES['image']['name']);
-      $imageType = pathinfo($file,PATHINFO_EXTENSION);
-
-      if($imageType != 'png' && $imageType != 'jpg' && $imageType != 'jpeg'){
-        echo "<script>alert('Image must be png,jpg,jpeg.')</script>";
+      if(empty($_POST['title']) || empty($_POST['content']) || empty($_FILES['image'])){
+        if(empty($_POST['title'])){
+          $titleError = 'Please fill title';
+        }
+        if(empty($_POST['content'])){
+          $contentError = 'Please fill content';
+        }
+        if(empty($_FILES['image'])){
+          $imageError = 'Please fill image';
+        }
       }else{
-        $title = $_POST['title'];
-        $content = $_POST['content'];
-        $image = $_FILES['image']['name'];
-        move_uploaded_file($_FILES['image']['tmp_name'],$file);
+        $file = 'images/'.($_FILES['image']['name']);
+        $imageType = pathinfo($file,PATHINFO_EXTENSION);
 
-        $stmt = $pdo->prepare("INSERT INTO posts(title,content,image,author_id) VALUES (?,?,?,?)");
-        $result = $stmt->execute([$title,$content,$image,$_SESSION['user_id']]);
-        if($result){
-          echo "<script>alert('Successfully Added'); window.location.href='index.php';</script>";
+        if($imageType != 'png' && $imageType != 'jpg' && $imageType != 'jpeg'){
+          echo "<script>alert('Image must be png,jpg,jpeg.')</script>";
+        }else{
+          $title = $_POST['title'];
+          $content = $_POST['content'];
+          $image = $_FILES['image']['name'];
+          move_uploaded_file($_FILES['image']['tmp_name'],$file);
+
+          $stmt = $pdo->prepare("INSERT INTO posts(title,content,image,author_id) VALUES (?,?,?,?)");
+          $result = $stmt->execute([$title,$content,$image,$_SESSION['user_id']]);
+          if($result){
+            echo "<script>alert('Successfully Added'); window.location.href='index.php';</script>";
+          }
         }
       }
   }
@@ -60,16 +74,18 @@
                 <form action="add.php" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" name="title" value="" required>
-                        <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                        <input type="text" class="form-control" name="title" value="">
+                        <div class="form-text text-danger"><?php echo empty($titleError) ? '': '*'.$titleError; ?></div>
                     </div>
                     <div class="mb-3">
                         <label for="content" class="form-label">Content</label>
                         <textarea name="content" class="form-control" cols="30" rows="10"></textarea>
+                        <div class="form-text text-danger"><?php echo empty($contentError) ? '': '*'.$contentError; ?></div>
                     </div>
                     <div class="form-group">
                         <label for="image">Image</label><br>
-                        <input type="file" name="image" value="" required>
+                        <input type="file" name="image" value="">
+                        <div class="form-text text-danger"><?php echo empty($imageError) ? '': '*'.$imageError; ?></div>
                     </div>
                     <div class="form-group">
                       <button type="submit" class="btn btn-success">Submit</button>

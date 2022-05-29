@@ -32,12 +32,18 @@
 
   if($_POST){
     $comment = $_POST['comment'];  
+    if(empty($comment)){
+      if(empty($comment)){
+        $cmtError = 'Please fill comment';
+      }
+    }else{
+      $stmt = $pdo->prepare("INSERT INTO comments(content,author_id,post_id) VALUES (?,?,?)");
+      $result = $stmt->execute([$comment,$_SESSION['user_id'],$post_id]);
 
-    $stmt = $pdo->prepare("INSERT INTO comments(content,author_id,post_id) VALUES (?,?,?)");
-    $result = $stmt->execute([$comment,$_SESSION['user_id'],$post_id]);
+      if($result){
+        header('Location: blog_detail.php?id='.$post_id);
+      }
 
-    if($result){
-      header('Location: blog_detail.php?id='.$post_id);
     }
 
   }
@@ -123,6 +129,7 @@
                   <!-- .img-push is used to add margin to elements next to floating images -->
                     <div class="img-push" style="width:95%; display:inline-block; !important">
                       <input type="text" name="comment" class="form-control form-control-sm" placeholder="Press enter to post comment">
+                      <div class="text-danger"><?php echo empty($cmtError) ? '': '*'.$cmtError; ?></div>
                     </div>
                   </form>
                 </div>
