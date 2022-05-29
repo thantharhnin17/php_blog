@@ -2,6 +2,7 @@
 
   session_start();
   require '../config/config.php';
+  require "../config/common.php";
 
   if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])){
     header('Location: login.php');
@@ -105,8 +106,8 @@
 
                     <tr>
                       <td><?php echo $i; ?></td>
-                      <td><?php echo $value['title']; ?></td>
-                      <td><?php echo substr($value['content'],0,200); ?></td>
+                      <td><?php echo escape($value['title']); ?></td>
+                      <td><?php echo escape(substr($value['content'],0,200)); ?></td>
                       <td>
                         <a href="edit.php?id=<?php echo $value['id']; ?>" class="btn btn-sm btn-warning">Edit</a>
                         <a href="delete.php?id=<?php echo $value['id']; ?>" 

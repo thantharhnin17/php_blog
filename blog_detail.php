@@ -82,7 +82,7 @@
               <div class="card card-widget">
                 <div class="card-header">
                   <div class="card-title text-center float-none">
-                    <h3><?php echo $result[0]['title'] ?></h3>
+                    <h3><?php echo escape($result[0]['title']) ?></h3>
                   </div>
                   
                 </div>
@@ -90,7 +90,7 @@
                 <div class="card-body">
                   <img class="img-fluid pad" src="admin/images/<?php echo $result[0]['image'] ?>" alt="Photo">
                   <br><br>
-                  <p><?php echo $result[0]['content'] ?></p>
+                  <p><?php echo escape($result[0]['content']) ?></p>
                 </div>
 
                 <div class="container-fluid border-bottom pb-2 px-4">
@@ -109,10 +109,10 @@
                    
                       <div class="comment-text">
                         <span class="username">
-                          <?php echo $au_result[$key][0]['name']; ?>
-                          <span class="text-muted float-right"><?php echo $value['created_at']; ?></span>
+                          <?php echo escape($au_result[$key][0]['name']); ?>
+                          <span class="text-muted float-right"><?php echo escape($value['created_at']); ?></span>
                         </span><!-- /.username -->
-                        <?php echo $value['content']; ?>
+                        <?php echo escape($value['content']); ?>
                       </div>
 
                     <!-- /.comment-text -->
@@ -126,7 +126,7 @@
                   <form action="" method="post">
                       <!-- csrf -->
                       <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>"> 
-                      
+
                       <div class="rounded-circle bg-dark text-white text-center float-left mr-2" style="width:30px; height:30px;">
                         <span class="fas fa-user" style="margin-top: 5px;"></span>
                       </div>

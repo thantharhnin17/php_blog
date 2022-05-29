@@ -92,12 +92,12 @@
                     <input type="hidden" name="id" value="<?php echo $result[0]['id'] ?>">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" name="title" value="<?php echo $result[0]['title'] ?>">
+                        <input type="text" class="form-control" name="title" value="<?php echo escape($result[0]['title']) ?>">
                         <div class="form-text text-danger"><?php echo empty($titleError) ? '': '*'.$titleError; ?></div>
                     </div>
                     <div class="mb-3">
                         <label for="content" class="form-label">Content</label>
-                        <textarea name="content" class="form-control" cols="30" rows="10"><?php echo $result[0]['content'] ?></textarea>
+                        <textarea name="content" class="form-control" cols="30" rows="10"><?php echo escape($result[0]['content']) ?></textarea>
                         <div class="form-text text-danger"><?php echo empty($contentError) ? '': '*'.$contentError; ?></div>
                     </div>
                     <div class="form-group">

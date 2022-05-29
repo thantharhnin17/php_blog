@@ -95,12 +95,12 @@
                     <input type="hidden" name="id" value="<?php echo $result[0]['id'] ?>">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" name="name" value="<?php echo $result[0]['name'] ?>">
+                        <input type="text" class="form-control" name="name" value="<?php echo escape($result[0]['name']) ?>">
                         <div class="form-text text-danger"><?php echo empty($nameError) ? '': '*'.$nameError; ?></div>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="text" class="form-control" name="email" value="<?php echo $result[0]['email'] ?>">
+                        <input type="text" class="form-control" name="email" value="<?php echo escape($result[0]['email']) ?>">
                         <div class="form-text text-danger"><?php echo empty($emailError) ? '': '*'.$emailError; ?></div>
                     </div>
                     <div class="mb-3">
