@@ -86,7 +86,7 @@
         <div class="mb-3">
           <div class="form-text text-danger"><?php echo empty($nameError) ? '': '*'.$nameError; ?></div>
           <div class="input-group">
-            <input type="name" name="name" class="form-control" placeholder="Name">
+            <input type="name" name="name" class="form-control" placeholder="Name"  value="<?php echo escape($_POST['name'] ?? ''); ?>">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
@@ -97,7 +97,7 @@
         <div class="mb-3">
           <div class="form-text text-danger"><?php echo empty($emailError) ? '': '*'.$emailError; ?></div>
           <div class="input-group">
-            <input type="email" name="email" class="form-control" placeholder="Email">
+            <input type="email" name="email" class="form-control" placeholder="Email"  value="<?php echo escape($_POST['email'] ?? ''); ?>">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-envelope"></span>
@@ -108,7 +108,7 @@
         <div class="mb-3">
           <div class="form-text text-danger"><?php echo empty($passwordError) ? '': '*'.$passwordError; ?></div>
           <div class="input-group">
-            <input type="password" name="password" class="form-control" id="pass" placeholder="Password">
+            <input type="password" name="password" class="form-control" id="pass" placeholder="Password"  value="<?php echo escape($_POST['password'] ?? ''); ?>">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>

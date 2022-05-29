@@ -44,7 +44,7 @@
         $stmt = $pdo->prepare("INSERT INTO users(name,email,password,role) VALUES (?,?,?,?)");
         $result = $stmt->execute([$name,$email,$password,$role]);
         if($result){
-          echo "<script>alert('Successfully Register As A User!'); window.location.href='user.php';</script>";
+          echo "<script>alert('Successfully Registered!'); window.location.href='user.php';</script>";
         }
       }
 
@@ -85,17 +85,17 @@
 
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" name="name" value="">
+                        <input type="text" class="form-control" name="name" value="<?php echo escape($_POST['name'] ?? ''); ?>">
                         <div class="form-text text-danger"><?php echo empty($nameError) ? '': '*'.$nameError; ?></div>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="text" class="form-control" name="email" value="">
+                        <input type="text" class="form-control" name="email" value="<?php echo escape($_POST['email'] ?? ''); ?>">
                         <div class="form-text text-danger"><?php echo empty($emailError) ? '': '*'.$emailError; ?></div>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" id="pass" value="">
+                        <input type="password" class="form-control" name="password" id="pass" value="<?php echo escape($_POST['password'] ?? ''); ?>">
                         <div class="form-text text-danger"><?php echo empty($passwordError) ? '': '*'.$passwordError; ?></div>
                         <div class="form-group form-check">
                           <input type="checkbox" class="form-check-input" id="checkPass" onclick="showPassword()">
@@ -107,7 +107,7 @@
                         <label class="form-check-label" for="user">User</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="role" id="admin" value="1">
+                        <input class="form-check-input" type="radio" name="role" id="admin" value="1" <?php if (isset($_POST['role']) && $_POST['role'] == '1')  echo ' checked="checked"';?>>
                         <label class="form-check-label" for="admin">Admin</label>
                     </div>
                     <br><br>

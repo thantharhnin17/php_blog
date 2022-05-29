@@ -63,7 +63,7 @@
         <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>"> 
 
         <div class="input-group mb-3">
-          <input type="email" name="email" class="form-control" placeholder="Email">
+          <input type="email" name="email" class="form-control" placeholder="Email" value="<?php echo escape($_POST['email'] ?? ''); ?>">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -71,7 +71,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" name="password" id="pass" class="form-control" placeholder="Password">
+          <input type="password" name="password" id="pass" class="form-control" placeholder="Password" value="<?php echo escape($_POST['password'] ?? ''); ?>">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>

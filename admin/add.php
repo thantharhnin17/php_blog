@@ -16,14 +16,14 @@
 
   if($_POST){
     
-      if(empty($_POST['title']) || empty($_POST['content']) || empty($_FILES['image'])){
+      if(empty($_POST['title']) || empty($_POST['content']) || empty($_FILES['image']['name'])){
         if(empty($_POST['title'])){
           $titleError = 'Please fill title';
         }
         if(empty($_POST['content'])){
           $contentError = 'Please fill content';
         }
-        if(empty($_FILES['image'])){
+        if(empty($_FILES['image']['name']) ){
           $imageError = 'Please fill image';
         }
       }else{
@@ -80,12 +80,12 @@
                                
                   <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" name="title" value="">
+                        <input type="text" class="form-control" name="title"  value="<?php echo escape($_POST['title'] ?? ''); ?>">
                         <div class="form-text text-danger"><?php echo empty($titleError) ? '': '*'.$titleError; ?></div>
                     </div>
                     <div class="mb-3">
                         <label for="content" class="form-label">Content</label>
-                        <textarea name="content" class="form-control" cols="30" rows="10"></textarea>
+                        <textarea name="content" class="form-control" cols="30" rows="10"><?php echo escape($_POST['content'] ?? ''); ?></textarea>
                         <div class="form-text text-danger"><?php echo empty($contentError) ? '': '*'.$contentError; ?></div>
                     </div>
                     <div class="form-group">
