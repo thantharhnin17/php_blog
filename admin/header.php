@@ -71,9 +71,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
+         <!-- User image -->
+         <div class="rounded-circle bg-light text-black text-center float-left img-circle elevation-2 ml-3" style="width:30px; height:30px;opacity: .8;">
+              <span class="fas fa-user" style="margin-top: 5px;"></span>
+          </div>
         <div class="info">
           <a href="#" class="d-block"><?php echo $_SESSION['name'] ?></a>
         </div>
