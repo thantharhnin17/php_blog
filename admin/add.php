@@ -1,7 +1,5 @@
 <?php
 
-//form back to remain text field
-
   session_start();
 
   require '../config/config.php';
