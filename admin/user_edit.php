@@ -28,7 +28,6 @@
       $id = $_POST['id'];
       $name = $_POST['name'];
       $email = $_POST['email'];
-      $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
       $role = $_POST['role'];
 
       $stmt = $pdo->prepare("SELECT * FROM users WHERE email=:email AND id!=:id");
@@ -39,7 +38,8 @@
       if($user){
           echo "<script>alert('Email duplicate')</script>";
       }else{ 
-        if($password != null){
+        if($_POST['password'] != null){
+          $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
           $stmt = $pdo->prepare("UPDATE users SET name='$name',email='$email',password='$password',role='$role' WHERE id='$id'");
         }else{
           $stmt = $pdo->prepare("UPDATE users SET name='$name',email='$email',role='$role' WHERE id='$id'");
